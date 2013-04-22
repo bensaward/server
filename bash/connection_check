@@ -35,22 +35,17 @@ check_log()
 
 check_network()
 {
-  if [ ! -e $LOCATION/$FILENAME ]
+  wget -O $LOCATION/$FILENAME google.com
+  if [ ! -s $LOCATION/$FILENAME ]
     then
-      wget -O $LOCATION/$FILENAME google.com
-      
-      if [ ! -e $LOCATION/$FILENAME ]
-	then
-	  echo -e "Connection lost"
-	  echo -e "Connection lost at `date`" >> $CONNECTION_LOG
-	#  $NETWORKING restart
+      echo -e "Connection lost"
+      echo -e "Connection lost at `date`" >> $CONNECTION_LOG
+      $NETWORKING restart
+      rm $LOCATION/$FILENAME
 
-	else
-	  rm $LOCATION/$FILENAME
-	  echo -e "We are online!"
-      
-      fi
-      
+    else
+      rm $LOCATION/$FILENAME
+      echo -e "We are online!"
   fi
 }
 
