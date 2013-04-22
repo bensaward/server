@@ -6,7 +6,7 @@
 #
 #	Script to check connection to the internet.
 #	Must be executed by crontab every half an
-#	hour of so BY ROOT!
+#	hour or so BY ROOT!
 
 LOCATION="/root"
 FILENAME="`date '+%d_%m_%Y-%H:%M'`.html"
