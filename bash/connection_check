@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#	/etc/connection_check
+
+#	Written by Ben Saward (benjamin.saward@gmail.com)
+#
+#	Script to check connection to the internet.
+#	Must be executed by crontab every half an
+#	hour of so BY ROOT!
+
+LOCATION="/root"
+FILENAME="`date '+%d_%m_%Y-%H:%M'`.html"
+LOG_FOLDER="/var/log/connection_check"
+LOG_NAME=connection.log
+CONNECTION_LOG=$LOG_FOLDER/$LOG_NAME
+NETWORKING="/etc/init.d/networking"
+
+check_UID()
+{
+  if [ $UID != "0" ]
+    then
+      echo -e "You must be root to execute this script!"
+      exit 0
+  fi
+}
+
+check_log()
+{
+  if [ ! -e $LOG_FOLDER ]
+    then
+      mkdir $LOG_FOLDER
+      touch $CONNECTION_LOG      
+  fi
+}
+
+check_network()
+{
+  if [ ! -e $LOCATION/$FILENAME ]
+    then
+      wget -O $LOCATION/$FILENAME google.com
+      
+      if [ ! -e $LOCATION/$FILENAME ]
+	then
+	  echo -e "Connection lost"
+	  echo -e "Connection lost at `date`" >> $CONNECTION_LOG
+	#  $NETWORKING restart
+
+	else
+	  rm $LOCATION/$FILENAME
+	  echo -e "We are online!"
+      
+      fi
+      
+  fi
+}
+
+check_UID
+check_log
+check_network
