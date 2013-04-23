@@ -60,7 +60,7 @@ rm_screen () {
 
 puts_screen() {
    JAVAPIDS=`pidof java`
-   MCPID=`ps -o pid,etime -p $JAVAPIDS |tail -n 1 |cut -d' ' -f1`
+   MCPID=`ps -o pid,etime -p $JAVAPIDS |tail -n 1 |cut -d' ' -f2`
    SCREENID=$(($MCPID - 2))
    touch $MCSCREENFILE
    echo $SCREENID >> $MCSCREENFILE
